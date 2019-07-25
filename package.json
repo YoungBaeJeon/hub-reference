@@ -4,7 +4,7 @@
   "description": "An identity hub secured using decentralized identities and served over HTTP with a Mongo DB datastore",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "node test.js",
     "prestart": "node setup.js",
     "start": "node index.js"
   },
@@ -15,6 +15,9 @@
     "@decentralized-identity/did-common-typescript": "0.1.18",
     "@decentralized-identity/hub-node-core": "0.1.4",
     "@microsoft/hub-mongo-connector": "1.0.0-alpha.2",
-    "express": "4.16.4"
+    "bitcore-ecies": "1.0.3",
+    "express": "4.16.4",
+    "keccak256": "^1.0.0",
+    "secp256k1": "^3.7.1"
   }
 }
