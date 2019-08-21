@@ -4,6 +4,8 @@ const ecKey = require('ec-key');
 const bitcore = require('bitcore-lib');
 const secp256k1 = require('secp256k1');
 const keccak256 = require('keccak256');
+const ec = require('elliptic').ec;
+const crypto = require('crypto');
 
 var PrivateKey = bitcore.PrivateKey;
 var PublicKey = bitcore.PublicKey;
@@ -73,9 +75,10 @@ class ExpandSecp256k1CryptoSuite extends didAuth.Secp256k1CryptoSuite
      */
     static verify(signedContent, signature, jwk) {
         return new Promise((resolve) => {
-            const signatureBuffer = Buffer.from(signature, 'base64');
+            const signatureBuffer = secp256k1.signatureNormalize(Buffer.from(signature, 'base64'));
+            var shaMsg = crypto.createHash("sha256").update(Buffer.from(signedContent)).digest();
             const publicKey = Buffer.concat([ Buffer.from([0x04]), Buffer.from(jwk.x, 'base64'), Buffer.from(jwk.y, 'base64')]);
-            const verify = secp256k1.verify(keccak256(Buffer.from(signedContent)), signatureBuffer.slice(0, signatureBuffer.length-1), publicKey);
+            const verify = secp256k1.verify(shaMsg, signatureBuffer, publicKey);
             resolve(verify);
         });
     }
@@ -88,9 +91,9 @@ class ExpandSecp256k1CryptoSuite extends didAuth.Secp256k1CryptoSuite
     static sign(content, jwk) {
         return new Promise((resolve) => {
             const eckey = new ecKey(jwk).createECDH('secp256k1');
-            const signObj = secp256k1.sign(keccak256(Buffer.from(content)), eckey.getPrivateKey());
-            const signature = Buffer.concat([signObj.signature, Buffer.from([signObj.recovery+27])]).toString('base64');
-            resolve(signature);
+            var shaMsg = crypto.createHash("sha256").update(Buffer.from(content)).digest();
+            const signObj = secp256k1.sign(shaMsg, eckey.getPrivateKey());
+            resolve(signObj.signature.toString('base64'));
         });
     }
 }

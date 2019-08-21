@@ -86,7 +86,7 @@ class ExpandEcPrivateKey extends ExpandEcPublicKey {
      */
     toPrivateKey(encoding) {
         const key = new ecKey(this);
-        var ecdhkey = key.createECDH("seck256k1");
+        var ecdhkey = key.createECDH("secp256k1");
         return ecdhkey.getPrivateKey().toString(encoding);
     }
 

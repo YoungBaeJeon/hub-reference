@@ -16,8 +16,12 @@
     "@decentralized-identity/hub-node-core": "0.1.4",
     "@microsoft/hub-mongo-connector": "1.0.0-alpha.2",
     "bitcore-ecies": "1.0.3",
+    "ecdh-es": "0.0.8",
     "express": "4.16.4",
     "keccak256": "^1.0.0",
+    "node-rsa": "^1.0.5",
+    "pem-jwk": "^2.0.0",
+    "rsa-pem-from-mod-exp": "^0.8.4",
     "secp256k1": "^3.7.1"
   }
 }
